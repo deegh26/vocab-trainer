@@ -179,6 +179,8 @@ function showSentence(){
 if(index>=sentenceQuestions.length){
   localStorage.setItem("score19", score*10);
 
+localStorage.setItem("score19", Math.round((score/sentenceQuestions.length)*100));
+  
 document.getElementById("app").innerHTML=
 "<h2>Quiz Complete</h2><p>Score "+score+"/"+sentenceQuestions.length+"</p>";
 
