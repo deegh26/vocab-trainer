@@ -15,16 +15,12 @@ color:white;
 }
 
 .header{
-padding:50px 20px 20px 20px;
+padding:40px 20px;
 }
 
 .header h1{
 margin:0;
 font-size:36px;
-}
-
-.header p{
-opacity:.9;
 }
 
 .grid{
@@ -40,17 +36,14 @@ margin:auto;
 background:white;
 color:#333;
 border-radius:14px;
-padding:40px 20px;
-font-size:20px;
-font-weight:bold;
-box-shadow:0 10px 25px rgba(0,0,0,.2);
+padding:30px 20px;
+box-shadow:0 10px 25px rgba(0,0,0,.25);
 transition:.25s;
 cursor:pointer;
 }
 
 .tile:hover{
-transform:translateY(-8px) scale(1.03);
-background:#eef2ff;
+transform:translateY(-6px) scale(1.03);
 }
 
 a{
@@ -58,13 +51,33 @@ text-decoration:none;
 color:inherit;
 }
 
-.icon{
-font-size:40px;
-margin-bottom:10px;
+.progress{
+background:#ddd;
+border-radius:8px;
+height:10px;
+margin-top:14px;
+overflow:hidden;
+}
+
+.bar{
+background:#4a6cff;
+height:100%;
+width:0%;
+transition:width .5s;
+}
+
+button{
+margin-top:30px;
+padding:10px 16px;
+border:none;
+border-radius:8px;
+background:white;
+color:#4a6cff;
+font-weight:bold;
+cursor:pointer;
 }
 
 .footer{
-margin-top:20px;
 padding:20px;
 font-size:14px;
 opacity:.8;
@@ -84,30 +97,69 @@ opacity:.8;
 
 <a href="19-20Adv.html">
 <div class="tile">
-<div class="icon">📘</div>
-Lesson 19–20
+<h2>Lesson 19–20</h2>
+
+<div class="progress">
+<div id="bar19" class="bar"></div>
+</div>
+
 </div>
 </a>
 
 <a href="17-20Adv.html">
 <div class="tile">
-<div class="icon">📚</div>
-Lessons 17–20
+<h2>Lessons 17–20</h2>
+
+<div class="progress">
+<div id="barAll" class="bar"></div>
+</div>
+
 </div>
 </a>
 
 <a href="flashcards.html">
 <div class="tile">
-<div class="icon">🧠</div>
-Flashcards Only
+<h2>Flashcards</h2>
+
+<div class="progress">
+<div id="barFlash" class="bar"></div>
+</div>
+
 </div>
 </a>
 
 </div>
 
+<button onclick="resetProgress()">Reset Progress</button>
+
 <div class="footer">
-Study mode • Quiz mode • Hard word review
+Study • Practice • Master Vocabulary
 </div>
+
+<script>
+
+function loadProgress(){
+
+let p19 = localStorage.getItem("score19") || 0;
+let pAll = localStorage.getItem("scoreAll") || 0;
+let pFlash = localStorage.getItem("scoreFlash") || 0;
+
+document.getElementById("bar19").style.width = p19 + "%";
+document.getElementById("barAll").style.width = pAll + "%";
+document.getElementById("barFlash").style.width = pFlash + "%";
+
+}
+
+function resetProgress(){
+
+localStorage.clear();
+location.reload();
+
+}
+
+loadProgress();
+
+</script>
 
 </body>
 </html>
