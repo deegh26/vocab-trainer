@@ -10,6 +10,7 @@ button{padding:10px 16px; margin:6px; border:none; border-radius:8px; background
 .option{display:block; width:260px; margin:6px auto; background:#ffffff; border:1px solid #ccc; padding:10px; border-radius:6px; cursor:pointer;}
 .stats{font-size:18px;}
 #homeBtn{background:#333; color:white; margin-top:20px;}
+.feedback{font-size:18px; margin:10px;}
 </style>
 </head>
 <body>
@@ -17,7 +18,6 @@ button{padding:10px 16px; margin:6px; border:none; border-radius:8px; background
 <h1>LGR Vocabulary Trainer</h1>
 <h3>Units 19–20</h3>
 
-<!-- Lesson Buttons -->
 <button onclick="flashcards()">Flashcards</button>
 <button onclick="sentenceQuiz()">Sentence Quiz</button>
 <button onclick="multipleChoice()">Multiple Choice Test</button>
@@ -25,11 +25,9 @@ button{padding:10px 16px; margin:6px; border:none; border-radius:8px; background
 <button onclick="cram()">5 Minute Cram</button>
 
 <div id="app"></div>
-
 <button id="homeBtn" onclick="goHome()">Back to Home</button>
 
 <script>
-// Vocabulary
 const vocab=[
 {w:"narrative",d:"a story"},{w:"narrate",d:"to tell a story"},{w:"pronounce",d:"to say aloud"},
 {w:"denounce",d:"to criticize strongly"},{w:"fabulous",d:"amazing"},{w:"fabled",d:"legendary"},
@@ -40,17 +38,18 @@ const vocab=[
 {w:"certainty",d:"something without doubt"},{w:"concerted",d:"done together"},{w:"ascertain",d:"figure out"}
 ];
 
-let index=0, showWord=true, missed=[], score=0;
+let index=0, showWord=true, missed=[], score=0, mcAnswered=false;
+
 function shuffle(a){return a.sort(()=>Math.random()-0.5);}
 function goHome(){ window.location.href="index.html"; }
 
-// Flashcards
+// FLASHCARDS
 function flashcards(){ shuffle(vocab); index=0; showWord=true; document.getElementById("app").innerHTML=`<h2>Flashcards</h2><div class="card" id="card" onclick="flip()"></div><br><button onclick="next()">Next</button>`; render(); }
 function render(){ document.getElementById("card").innerHTML = showWord ? "<b>"+vocab[index].w+"</b>" : vocab[index].d; }
 function flip(){ showWord=!showWord; render(); }
 function next(){ index=(index+1)%vocab.length; showWord=true; render(); }
 
-// Sentence Quiz
+// SENTENCE QUIZ
 const sentenceQuestions=[
 {q:"The teacher asked the student to ______ the story.",a:"narrate"},
 {q:"The scientist used ______ evidence.",a:"scientific"},
@@ -82,24 +81,46 @@ function checkSentence(){
   index++; showSentence(); 
 }
 
-// Multiple Choice
-function multipleChoice(){ shuffle(vocab); index=0; score=0; showMC(); }
+// MULTIPLE CHOICE WITH FEEDBACK
+function multipleChoice(){ shuffle(vocab); index=0; score=0; mcAnswered=false; showMC(); }
 function showMC(){ 
   if(index>=10){ 
     localStorage.setItem("score19", Math.round((score/10)*100)); 
     document.getElementById("app").innerHTML=`<h2>Test Complete</h2><p>Score ${score}/10</p>`; 
     return; 
   }
-  let correct=vocab[index]; let options=[correct];
-  while(options.length<4){ let r=vocab[Math.floor(Math.random()*vocab.length)]; if(!options.includes(r)) options.push(r);}
-  shuffle(options);
-  let html="<h2>"+correct.w+"</h2>";
-  options.forEach(o=>{ html+="<div class='option' onclick='answerMC(\""+o.d+"\")'>"+o.d+"</div>";});
-  document.getElementById("app").innerHTML=html;
-}
-function answerMC(choice){ let correct=vocab[index]; if(choice===correct.d){ score++; } else{ missed.push(correct.w); } index++; showMC(); }
 
-// Review Hard Words
+  let correct=vocab[index];
+  let options=[correct];
+  while(options.length<4){
+    let r=vocab[Math.floor(Math.random()*vocab.length)];
+    if(!options.includes(r)) options.push(r);
+  }
+  shuffle(options);
+
+  let html="<h2>"+correct.w+"</h2><div id='feedback' class='feedback'></div>";
+  options.forEach(o=>{
+    html+=`<div class='option' onclick='checkMC("${o.d}","${correct.d}")'>${o.d}</div>`;
+  });
+  document.getElementById("app").innerHTML=html;
+  mcAnswered=false;
+}
+
+function checkMC(choice, correctAnswer){
+  if(mcAnswered) return; // ignore multiple clicks
+  mcAnswered=true;
+  const feedback=document.getElementById("feedback");
+  if(choice===correctAnswer){
+    score++;
+    feedback.innerHTML="<span style='color:green'>Correct!</span>";
+  } else{
+    missed.push(vocab[index].w);
+    feedback.innerHTML=`<span style='color:red'>Wrong! Correct: ${correctAnswer}</span>`;
+  }
+  setTimeout(()=>{ index++; showMC(); }, 1000);
+}
+
+// HARD WORDS REVIEW
 function review(){ 
   if(missed.length===0){ document.getElementById("app").innerHTML="<h2>No hard words yet!</h2>"; return; }
   let html="<h2>Hard Words</h2>";
@@ -107,7 +128,7 @@ function review(){
   document.getElementById("app").innerHTML=html;
 }
 
-// 5 Minute Cram
+// 5-MINUTE CRAM
 function cram(){ 
   let html="<h2>5 Minute Cram Sheet</h2>";
   vocab.forEach(v=>{ html+="<p><b>"+v.w+"</b> — "+v.d+"</p>"; });
