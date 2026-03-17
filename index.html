@@ -1,345 +1,217 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>LGR Vocabulary Trainer Units 17–20</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocabulary 17-20</title>
 <style>
-
-body{
-font-family:Arial;
-background:#eef2ff;
-text-align:center;
-padding:30px;
-}
-
-.card{
-width:380px;
-min-height:220px;
-margin:auto;
-background:white;
-border-radius:14px;
-box-shadow:0 6px 18px rgba(0,0,0,.2);
-display:flex;
-align-items:center;
-justify-content:center;
-padding:20px;
-flex-direction:column;
-font-size:22px;
-cursor:pointer;
-}
-
-button{
-padding:10px 16px;
-margin:6px;
-border:none;
-border-radius:8px;
-background:#4a6cff;
-color:white;
-font-size:15px;
-cursor:pointer;
-}
-
-.option{
-display:block;
-width:260px;
-margin:6px auto;
-background:#ffffff;
-border:1px solid #ccc;
-padding:10px;
-border-radius:6px;
-cursor:pointer;
-}
-
-.stats{
-font-size:18px;
-}
-
+body { font-family: Arial, sans-serif; background: #f4f4f4; text-align: center; margin:0; }
+.container { max-width: 900px; margin: auto; padding: 20px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 40px; }
+.tile { background: white; padding: 40px 20px; border-radius: 16px; box-shadow: 0 6px 12px rgba(0,0,0,0.15); cursor: pointer; font-size: 20px; font-weight: bold; }
+.tile:hover { transform: scale(1.05); }
+.card { background: white; border-radius: 12px; padding: 30px; margin: 20px 0; box-shadow: 0 6px 12px rgba(0,0,0,0.15); cursor: pointer; }
+.word { font-size: 28px; font-weight: bold; }
+.hidden { display: none; }
+button { padding: 10px 20px; margin: 10px; border: none; border-radius: 8px; background: #333; color: white; cursor: pointer; }
+button:hover { background: #555; }
+.section { display:none; }
 </style>
 </head>
-
 <body>
+<div class="container">
+<h1>Vocabulary Learning 17-20</h1>
 
-<h1>LGR Vocabulary Trainer</h1>
-<h3>Units 17–20</h3>
+<div id="landing" class="tiles">
+<div class="tile" onclick="showSection('flashcards')">Flashcards</div>
+<div class="tile" onclick="showSection('mcq')">Multiple Choice</div>
+<div class="tile" onclick="showSection('sentence')">Fill in the Blank</div>
+</div>
 
-<button onclick="flashcards()">Flashcards</button>
-<button onclick="sentenceQuiz()">Sentence Quiz</button>
-<button onclick="multipleChoice()">Multiple Choice Test</button>
-<button onclick="review()">Hard Words Review</button>
-<button onclick="cram()">5 Minute Cram</button>
+<div id="flashcards" class="section">
+<h2>Flashcards</h2>
+<div class="card" onclick="flipCard()">
+<div id="word" class="word"></div>
+<div id="content" class="hidden"></div>
+</div>
+<button onclick="prevCard()">Previous</button>
+<button onclick="nextCard()">Next</button>
+<button onclick="goHome()">Home</button>
+</div>
 
-<div id="app"></div>
+<div id="mcq" class="section">
+<h2>Multiple Choice Quiz</h2>
+<p id="quizWord" class="word"></p>
+<div id="choices"></div>
+<p id="feedback"></p>
+<button onclick="goHome()">Home</button>
+</div>
+
+<div id="sentence" class="section">
+<h2>Fill in the Blank</h2>
+<p id="sentencePrompt"></p>
+<div id="sentenceChoices"></div>
+<p id="sentenceFeedback"></p>
+<button onclick="goHome()">Home</button>
+</div>
+
+</div>
 
 <script>
+function showSection(id){
+document.getElementById('landing').style.display='none';
+document.querySelectorAll('.section').forEach(s=>s.style.display='none');
+document.getElementById(id).style.display='block';
+}
+function goHome(){
+document.getElementById('landing').style.display='grid';
+document.querySelectorAll('.section').forEach(s=>s.style.display='none');
+}
 
-const vocab=[
-
-{w:"elongate",d:"make longer"},
-{w:"prolong",d:"extend time"},
-{w:"abbreviate",d:"make shorter"},
-{w:"brevity",d:"shortness"},
-{w:"density",d:"thickness"},
-{w:"condense",d:"make shorter"},
-{w:"emaciated",d:"very thin"},
-{w:"meager",d:"not plentiful"},
-{w:"attentive",d:"careful and focused"},
-{w:"intend",d:"plan to do"},
-{w:"aerate",d:"fill with air"},
-{w:"aerial",d:"in the air"},
-{w:"airy",d:"light and open"},
-{w:"inflate",d:"make bigger"},
-{w:"deflate",d:"make smaller"},
-{w:"ventilate",d:"push air through"},
-{w:"hyperventilate",d:"breathe too fast"},
-{w:"aspire",d:"aim for a goal"},
-{w:"spirited",d:"energetic"},
-{w:"expire",d:"come to an end"},
-
-{w:"narrative",d:"a story"},
-{w:"narrate",d:"tell a story"},
-{w:"pronounce",d:"say aloud"},
-{w:"denounce",d:"criticize strongly"},
-{w:"fabulous",d:"amazing"},
-{w:"fabled",d:"legendary"},
-{w:"mythical",d:"not real"},
-{w:"mythology",d:"collection of myths"},
-{w:"recount",d:"tell or describe"},
-{w:"discount",d:"reject as untrue"},
-{w:"idealistic",d:"believing in perfection"},
-{w:"ideal",d:"perfectly suitable"},
-{w:"idealize",d:"think of as perfect"},
-{w:"conscience",d:"sense of right and wrong"},
-{w:"scientific",d:"based on facts"},
-{w:"savvy",d:"clever understanding"},
-{w:"savor",d:"enjoy slowly"},
-{w:"certify",d:"prove true"},
-{w:"certainty",d:"something without doubt"},
-{w:"concerted",d:"done together"},
-{w:"ascertain",d:"figure out"}
-
+const flashcards = [
+{word:"elongate",meaning:"make longer"},
+{word:"prolong",meaning:"extend time"},
+{word:"abbreviate",meaning:"make shorter"},
+{word:"brevity",meaning:"shortness"},
+{word:"density",meaning:"thickness"},
+{word:"condense",meaning:"make shorter"},
+{word:"emaciated",meaning:"very thin"},
+{word:"meager",meaning:"not plentiful"},
+{word:"attentive",meaning:"careful and focused"},
+{word:"intend",meaning:"plan to do"},
+{word:"aerate",meaning:"fill with air"},
+{word:"aerial",meaning:"in the air"},
+{word:"airy",meaning:"light and open"},
+{word:"inflate",meaning:"make bigger"},
+{word:"deflate",meaning:"make smaller"},
+{word:"ventilate",meaning:"push air through"},
+{word:"hyperventilate",meaning:"breathe too fast"},
+{word:"aspire",meaning:"aim for a goal"},
+{word:"spirited",meaning:"energetic"},
+{word:"expire",meaning:"come to an end"},
+{word:"narrative",meaning:"a story"},
+{word:"narrate",meaning:"tell a story"},
+{word:"pronounce",meaning:"say aloud"},
+{word:"denounce",meaning:"criticize strongly"},
+{word:"fabulous",meaning:"amazing"},
+{word:"fabled",meaning:"legendary"},
+{word:"mythical",meaning:"not real"},
+{word:"mythology",meaning:"collection of myths"},
+{word:"recount",meaning:"tell or describe"},
+{word:"discount",meaning:"reject as untrue"},
+{word:"idealistic",meaning:"believing in perfection"},
+{word:"ideal",meaning:"perfectly suitable"},
+{word:"idealize",meaning:"think of as perfect"},
+{word:"conscience",meaning:"sense of right and wrong"},
+{word:"scientific",meaning:"based on facts"},
+{word:"savvy",meaning:"clever understanding"},
+{word:"savor",meaning:"enjoy slowly"},
+{word:"certify",meaning:"prove true"},
+{word:"certainty",meaning:"something without doubt"},
+{word:"concerted",meaning:"done together"},
+{word:"ascertain",meaning:"figure out"}
 ];
 
-let index=0;
-let showWord=true;
-let missed=[];
+let current=0, quizIndex=0, sentenceIndex=0;
 
-function shuffle(a){
-return a.sort(()=>Math.random()-0.5);
+function renderCard(){
+word.textContent=flashcards[current].word;
+content.innerHTML=`<p><b>Meaning:</b> ${flashcards[current].meaning}</p>`;
+content.classList.add('hidden');
+}
+function flipCard(){content.classList.toggle('hidden');}
+function nextCard(){current=(current+1)%flashcards.length;renderCard();}
+function prevCard(){current=(current-1+flashcards.length)%flashcards.length;renderCard();}
+
+function loadQuiz(){
+const q=flashcards[quizIndex];
+quizWord.textContent=q.word;
+choices.innerHTML='';
+let options=[q.meaning];
+while(options.length<4){let m=flashcards[Math.floor(Math.random()*flashcards.length)].meaning;if(!options.includes(m))options.push(m);} 
+options.sort(()=>Math.random()-0.5);
+options.forEach(opt=>{let b=document.createElement('button');b.textContent=opt;b.onclick=()=>{if(opt===q.meaning){feedback.textContent='Correct!';quizIndex=(quizIndex+1)%flashcards.length;setTimeout(loadQuiz,700);}else{feedback.textContent='Incorrect, try again.';}};choices.appendChild(b);});
 }
 
-function flashcards(){
+function loadSentenceQuiz(){
+const q=flashcards[sentenceIndex];
 
-shuffle(vocab);
-index=0;
-showWord=true;
+// high-quality sentence bank
+const sentenceMap = {
+elongate:"The teacher asked students to _____ their essays by adding more details.",
+prolong:"The coach decided to _____ practice so the team could improve their skills.",
+abbreviate:"You can _____ the word by using its shorter form in your notes.",
+brevity:"The teacher appreciated the _____ of his answer because it was short and clear.",
+density:"The rock sank because of its high _____ compared to water.",
+condense:"She tried to _____ the long paragraph into just a few sentences.",
+emaciated:"After being lost for days, the hiker looked _____ and weak.",
+meager:"They had only a _____ amount of food left after the long trip.",
+attentive:"The students were _____ and listened carefully to the instructions.",
+intend:"I _____ to finish my homework before dinner tonight.",
+aerate:"Farmers _____ the soil to allow air to reach plant roots.",
+aerial:"The drone captured an _____ view of the entire city from above.",
+airy:"The room felt _____ because of the large windows and fresh breeze.",
+inflate:"They used a pump to _____ the tires before the long ride.",
+deflate:"The balloon began to _____ after it was left out overnight.",
+ventilate:"It is important to _____ the room by opening windows.",
+hyperventilate:"He started to _____ when he became very nervous before the speech.",
+aspire:"She hopes to _____ to become a great scientist one day.",
+spirited:"The team gave a _____ performance full of energy and excitement.",
+expire:"The milk will _____ if it is not used before the date on the carton.",
+narrative:"The book's _____ kept readers interested from beginning to end.",
+narrate:"He was asked to _____ the events of the story in his own words.",
+pronounce:"It can be hard to _____ new words correctly in another language.",
+denounce:"The leader chose to _____ the unfair decision publicly.",
+fabulous:"They had a _____ time at the amusement park with their friends.",
+fabled:"The hero searched for the _____ treasure hidden in the mountains.",
+mythical:"The dragon was a _____ creature from ancient stories.",
+mythology:"We learned about Greek _____ and its famous gods.",
+recount:"She was asked to _____ what happened during the field trip.",
+discount:"He tried to _____ the strange story, but others believed it.",
+idealistic:"Her _____ ideas made her believe the world could be perfect.",
+ideal:"This quiet place is the _____ spot to study and relax.",
+idealize:"People sometimes _____ their heroes and forget their flaws.",
+conscience:"His _____ told him to tell the truth even though it was hard.",
+scientific:"The experiment used a _____ method to test the idea.",
+savvy:"She is very tech-_____ and can solve computer problems easily.",
+savor:"He took time to _____ each bite of the delicious meal.",
+certify:"The official will _____ the results as correct.",
+certainty:"She spoke with _____ because she knew the answer was right.",
+concerted:"They made a _____ effort to clean the entire park together.",
+ascertain:"The detective worked to _____ the truth using clues."
+};
 
-document.getElementById("app").innerHTML=`
-<h2>Flashcards</h2>
-<div class="card" onclick="flip()" id="card"></div>
-<br>
-<button onclick="next()">Next</button>
-`;
+let sentence = sentenceMap[q.word] || `Choose the correct word: _____`;
 
-render();
+sentencePrompt.textContent = sentence;
 
-}
-
-function render(){
-
-let c=document.getElementById("card");
-
-if(showWord){
-c.innerHTML="<b>"+vocab[index].w+"</b>";
-}else{
-c.innerHTML=vocab[index].d;
-}
-
-}
-
-function flip(){
-showWord=!showWord;
-render();
-}
-
-function next(){
-index=(index+1)%vocab.length;
-showWord=true;
-render();
-}
-
-const sentenceQuestions=[
-
-{q:"The fog had high ______.",a:"density"},
-{q:"The scientist tried to ______ the long report.",a:"condense"},
-{q:"The dog looked ______ after days without food.",a:"emaciated"},
-{q:"The teacher asked us to ______ the story.",a:"narrate"},
-{q:"The detective tried to ______ the truth.",a:"ascertain"},
-{q:"The scientist used ______ evidence.",a:"scientific"},
-{q:"He hopes to ______ to become a doctor.",a:"aspire"},
-{q:"The coupon will ______ tomorrow.",a:"expire"},
-{q:"The team made a ______ effort.",a:"concerted"},
-{q:"The teacher asked us to ______ long words.",a:"abbreviate"}
-
-];
-
-let score=0;
-
-function sentenceQuiz(){
-
-shuffle(sentenceQuestions);
-index=0;
-score=0;
-
-showSentence();
-
-}
-
-function showSentence(){
-
-if(index>=sentenceQuestions.length){
-
-document.getElementById("app").innerHTML=
-"<h2>Quiz Complete</h2><p>Score "+score+"/"+sentenceQuestions.length+"</p>";
-
-return;
-}
-
-document.getElementById("app").innerHTML=
-
-"<p style='font-size:22px'>"+sentenceQuestions[index].q+"</p>"+
-"<input id='ans'>"+
-"<br><br>"+
-"<button onclick='checkSentence()'>Submit</button>"+
-"<p class='stats'>Score: "+score+"</p>";
-
-}
-
-function checkSentence(){
-
-let u=document.getElementById("ans").value.toLowerCase();
-
-if(u===sentenceQuestions[index].a){
-score++;
-}else{
-missed.push(sentenceQuestions[index].a);
-alert("Answer: "+sentenceQuestions[index].a);
-}
-
-index++;
-showSentence();
-
-}
-
-function multipleChoice(){
-
-shuffle(vocab);
-index=0;
-score=0;
-
-showMC();
-
-}
-
-function showMC(){
-
-if(index>=12){
-
-document.getElementById("app").innerHTML=
-"<h2>Test Complete</h2><p>Score "+score+"/12</p>";
-
-return;
-}
-
-let correct=vocab[index];
-
-let options=[correct];
-
+let options=[q.word];
 while(options.length<4){
-
-let r=vocab[Math.floor(Math.random()*vocab.length)];
-
-if(!options.includes(r)) options.push(r);
-
+let w=flashcards[Math.floor(Math.random()*flashcards.length)].word;
+if(!options.includes(w)) options.push(w);
 }
 
-shuffle(options);
+options.sort(()=>Math.random()-0.5);
 
-let html="<h2>"+correct.w+"</h2>";
+sentenceChoices.innerHTML='';
 
-options.forEach(o=>{
-
-html+="<div class='option' onclick='answerMC(\""+o.d+"\")'>"+o.d+"</div>";
-
-});
-
-document.getElementById("app").innerHTML=html;
-
-}
-
-function answerMC(choice){
-
-let correct=vocab[index];
-
-if(choice===correct.d){
-
-score++;
-
+options.forEach(opt=>{
+let b=document.createElement('button');
+b.textContent=opt;
+b.onclick=()=>{
+if(opt===q.word){
+sentenceFeedback.textContent='Correct!';
+sentenceIndex=(sentenceIndex+1)%flashcards.length;
+setTimeout(loadSentenceQuiz,700);
 }else{
-
-missed.push(correct.w);
-
+sentenceFeedback.textContent='Incorrect, try again.';
 }
-
-index++;
-
-showMC();
-
-}
-
-function review(){
-
-if(missed.length===0){
-
-document.getElementById("app").innerHTML="<h2>No hard words yet!</h2>";
-
-return;
-
-}
-
-let html="<h2>Hard Words</h2>";
-
-missed.forEach(w=>{
-
-let v=vocab.find(x=>x.w===w);
-
-if(v){
-
-html+="<p><b>"+v.w+"</b> — "+v.d+"</p>";
-
-}
-
+};
+sentenceChoices.appendChild(b);
 });
-
-document.getElementById("app").innerHTML=html;
-
 }
 
-function cram(){
-
-let html="<h2>5 Minute Cram Sheet</h2>";
-
-vocab.forEach(v=>{
-
-html+="<p><b>"+v.w+"</b> — "+v.d+"</p>";
-
-});
-
-document.getElementById("app").innerHTML=html;
-
-}
-
+renderCard();loadQuiz();loadSentenceQuiz();
 </script>
-
 </body>
 </html>
