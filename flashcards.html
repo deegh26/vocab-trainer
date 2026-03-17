@@ -3,11 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <title>Flashcards Units 17–20</title>
+
 <style>
-body{font-family:Arial;background:#eef2ff;text-align:center;padding:20px;font-size:18px;}
-.card{width:90%;max-width:420px;margin:auto;background:white;padding:20px;border-radius:12px;
-box-shadow:0 4px 10px rgba(0,0,0,.2);font-size:22px;cursor:pointer;}
-button{padding:10px 16px;margin:10px;border:none;border-radius:8px;background:#4a6cff;color:white;}
+body{
+font-family:Arial;
+background:#eef2ff;
+text-align:center;
+padding:20px;
+font-size:18px;
+}
+
+.card{
+width:90%;
+max-width:420px;
+margin:auto;
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.2);
+font-size:22px;
+cursor:pointer;
+}
+
+button{
+padding:10px 16px;
+margin:10px;
+border:none;
+border-radius:8px;
+background:#4a6cff;
+color:white;
+font-size:16px;
+}
 </style>
 </head>
 
@@ -23,31 +49,48 @@ button{padding:10px 16px;margin:10px;border:none;border-radius:8px;background:#4
 <script>
 
 const vocab=[
-{w:"elongate",d:"make longer",s:[
-"The teacher asked us to elongate the sentence with more details.",
-"The shadow began to elongate as the sun went down.",
-"She tried to elongate her answer to sound smarter."
-]},
-{w:"aspire",d:"aim for a goal",s:[
-"He hopes to aspire to become a doctor someday.",
-"Many students aspire to do well in school.",
-"She works hard because she aspires to succeed."
-]},
-{w:"narrative",d:"a story",s:[
-"The book had a clear narrative that was easy to follow.",
-"She wrote a narrative about her summer vacation.",
-"The teacher asked for a narrative in class."
-]},
-{w:"scientific",d:"based on facts",s:[
-"The project used scientific facts to explain the idea.",
-"He made a scientific guess after testing the problem.",
-"The report included scientific evidence."
-]},
-{w:"ascertain",d:"figure out",s:[
-"The detective tried to ascertain the truth.",
-"We must ascertain what caused the mistake.",
-"She asked questions to ascertain the answer."
-]}
+{w:"elongate",d:"make longer",s:["She tried to elongate her answer with more details.","The shadow began to elongate at sunset.","The teacher asked us to elongate the sentence."]},
+{w:"prolong",d:"extend time",s:["Rain will prolong the game.","He tried to prolong the meeting.","Medicine can prolong life."]},
+{w:"abbreviate",d:"make shorter",s:["We abbreviate long words.","Please abbreviate your answer.","He learned to abbreviate names."]},
+{w:"brevity",d:"shortness",s:["The teacher liked the brevity of the answer.","Brevity helps writing stay clear.","The speech had great brevity."]},
+{w:"density",d:"thickness",s:["The density of the fog made it hard to see.","Water has a higher density than air.","The density of the crowd increased."]},
+{w:"condense",d:"make shorter",s:["She tried to condense the report.","The writer condensed the story.","We condense notes for studying."]},
+{w:"emaciated",d:"very thin",s:["The dog looked emaciated.","The man became emaciated after illness.","He appeared weak and emaciated."]},
+{w:"meager",d:"not plentiful",s:["They had a meager supply of food.","The reward was meager.","He earned a meager salary."]},
+{w:"attentive",d:"careful and focused",s:["She was attentive in class.","The dog is attentive to sounds.","He remained attentive during the lecture."]},
+{w:"intend",d:"plan to do",s:["I intend to finish my homework.","She intends to travel.","They intend to win the game."]},
+{w:"aerate",d:"fill with air",s:["Farmers aerate the soil.","You must aerate the lawn.","The process helps aerate water."]},
+{w:"aerial",d:"in the air",s:["The drone took aerial photos.","Birds perform aerial tricks.","The view was aerial."]},
+{w:"airy",d:"light and open",s:["The room felt airy.","She wore an airy dress.","The space was bright and airy."]},
+{w:"inflate",d:"make bigger",s:["We inflate balloons.","Prices inflate over time.","He inflated the tire."]},
+{w:"deflate",d:"make smaller",s:["Let’s deflate the balloon.","The tire began to deflate.","His confidence deflated."]},
+{w:"ventilate",d:"push air through",s:["Open windows to ventilate the room.","The system ventilates air.","Hospitals ventilate patients."]},
+{w:"hyperventilate",d:"breathe too fast",s:["She began to hyperventilate.","People may hyperventilate when scared.","Calm down so you don’t hyperventilate."]},
+{w:"aspire",d:"aim for a goal",s:["He aspires to be a doctor.","Students aspire to succeed.","She aspires to greatness."]},
+{w:"spirited",d:"energetic",s:["She gave a spirited speech.","The team played a spirited game.","The child is very spirited."]},
+{w:"expire",d:"come to an end",s:["The coupon will expire soon.","His time expired.","The milk will expire."]},
+
+{w:"narrative",d:"a story",s:["The book had a clear narrative.","She wrote a narrative.","The teacher asked for a narrative."]},
+{w:"narrate",d:"tell a story",s:["He will narrate the story.","She narrates well.","They narrate events."]},
+{w:"pronounce",d:"say aloud",s:["Please pronounce the word.","He pronounced it clearly.","She learned to pronounce names."]},
+{w:"denounce",d:"criticize strongly",s:["The leader denounced the action.","She denounced unfair rules.","They denounce injustice."]},
+{w:"fabulous",d:"amazing",s:["The show was fabulous.","She had a fabulous time.","The meal tasted fabulous."]},
+{w:"fabled",d:"legendary",s:["The fabled city was lost.","He heard a fabled story.","The place is fabled."]},
+{w:"mythical",d:"not real",s:["Dragons are mythical.","The creature is mythical.","They told mythical stories."]},
+{w:"mythology",d:"collection of myths",s:["Greek mythology is famous.","We studied mythology.","Mythology tells stories."]},
+{w:"recount",d:"tell or describe",s:["He recounted the event.","She recounts stories.","They recount history."]},
+{w:"discount",d:"reject as untrue",s:["He discounted the idea.","They discount rumors.","She discounted the claim."]},
+{w:"idealistic",d:"believing in perfection",s:["He is idealistic.","She has idealistic views.","They remain idealistic."]},
+{w:"ideal",d:"perfectly suitable",s:["This is ideal weather.","The plan is ideal.","She found the ideal place."]},
+{w:"idealize",d:"think of as perfect",s:["He idealized heroes.","She idealizes people.","They idealize success."]},
+{w:"conscience",d:"sense of right and wrong",s:["His conscience guided him.","She followed her conscience.","A clear conscience matters."]},
+{w:"scientific",d:"based on facts",s:["The study was scientific.","He used scientific methods.","The answer was scientific."]},
+{w:"savvy",d:"clever understanding",s:["She is tech savvy.","He is business savvy.","They are savvy learners."]},
+{w:"savor",d:"enjoy slowly",s:["Savor your food.","He savored the moment.","She savors every bite."]},
+{w:"certify",d:"prove true",s:["They certify results.","He certified the report.","The teacher certified it."]},
+{w:"certainty",d:"something without doubt",s:["She spoke with certainty.","There is no certainty.","He showed certainty."]},
+{w:"concerted",d:"done together",s:["They made a concerted effort.","The team acted concerted.","It was a concerted plan."]},
+{w:"ascertain",d:"figure out",s:["He tried to ascertain truth.","We ascertain facts.","She ascertained the answer."]}
 ];
 
 let i=0, showWord=true;
