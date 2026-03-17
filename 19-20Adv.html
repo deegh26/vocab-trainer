@@ -81,7 +81,7 @@ function checkSentence(){
   index++; showSentence(); 
 }
 
-// MULTIPLE CHOICE WITH FEEDBACK
+// MULTIPLE CHOICE WITH TRY-UNTIL-CORRECT
 function multipleChoice(){ shuffle(vocab); index=0; score=0; mcAnswered=false; showMC(); }
 function showMC(){ 
   if(index>=10){ 
@@ -89,7 +89,6 @@ function showMC(){
     document.getElementById("app").innerHTML=`<h2>Test Complete</h2><p>Score ${score}/10</p>`; 
     return; 
   }
-
   let correct=vocab[index];
   let options=[correct];
   while(options.length<4){
@@ -97,27 +96,21 @@ function showMC(){
     if(!options.includes(r)) options.push(r);
   }
   shuffle(options);
-
   let html="<h2>"+correct.w+"</h2><div id='feedback' class='feedback'></div>";
-  options.forEach(o=>{
-    html+=`<div class='option' onclick='checkMC("${o.d}","${correct.d}")'>${o.d}</div>`;
-  });
+  options.forEach(o=>{ html+=`<div class='option' onclick='checkMC(\"${o.d}\",\"${correct.d}\")'>${o.d}</div>`; });
   document.getElementById("app").innerHTML=html;
-  mcAnswered=false;
 }
 
 function checkMC(choice, correctAnswer){
-  if(mcAnswered) return; // ignore multiple clicks
-  mcAnswered=true;
-  const feedback=document.getElementById("feedback");
+  const feedback = document.getElementById("feedback");
   if(choice===correctAnswer){
     score++;
     feedback.innerHTML="<span style='color:green'>Correct!</span>";
-  } else{
-    missed.push(vocab[index].w);
-    feedback.innerHTML=`<span style='color:red'>Wrong! Correct: ${correctAnswer}</span>`;
+    setTimeout(()=>{ index++; showMC(); }, 1000);
+  } else {
+    feedback.innerHTML="<span style='color:red'>Wrong! Try again.</span>";
+    // do NOT increment index; user must try again
   }
-  setTimeout(()=>{ index++; showMC(); }, 1000);
 }
 
 // HARD WORDS REVIEW
