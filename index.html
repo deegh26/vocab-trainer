@@ -10,21 +10,29 @@ body {
   text-align: center;
   padding: 50px;
 }
+.tiles-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
 .tile {
-  display: inline-block;
-  width: 200px;
+  flex: 0 0 200px;
   height: 150px;
-  margin: 20px;
   background: #4a6cff;
   color: white;
-  font-size: 20px;
-  line-height: 150px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 14px;
   cursor: pointer;
   text-decoration: none;
+  transition: transform 0.2s, background 0.2s;
 }
 .tile:hover {
   background: #3a54cc;
+  transform: translateY(-3px);
 }
 </style>
 </head>
@@ -32,9 +40,11 @@ body {
 
 <h1>LGR Vocabulary Lessons</h1>
 
-<a class="tile" href="19-20Adv.html">Lessons 19-20</a>
-<a class="tile" href="17-20Adv.html">Lessons 17-20</a>
-<a class="tile" href="flashcards.html">Flashcards Units 17–20</a>
+<div class="tiles-container">
+  <a class="tile" href="19-20Adv.html">Lessons 19–20</a>
+  <a class="tile" href="17-20Adv.html">Lessons 17–20</a>
+  <a class="tile" href="flashcards.html">Flashcards Units 17–20</a>
+</div>
 
 </body>
 </html>
