@@ -102,6 +102,7 @@ const vocab=[
 let index=0;
 let showWord=true;
 let missed=[];
+let score=0;
 
 function shuffle(a){
 return a.sort(()=>Math.random()-0.5);
@@ -162,8 +163,6 @@ const sentenceQuestions=[
 
 ];
 
-let score=0;
-
 function sentenceQuiz(){
 
 shuffle(sentenceQuestions);
@@ -177,10 +176,9 @@ showSentence();
 function showSentence(){
 
 if(index>=sentenceQuestions.length){
-  localStorage.setItem("score19", score*10);
 
 localStorage.setItem("score19", Math.round((score/sentenceQuestions.length)*100));
-  
+
 document.getElementById("app").innerHTML=
 "<h2>Quiz Complete</h2><p>Score "+score+"/"+sentenceQuestions.length+"</p>";
 
@@ -227,6 +225,8 @@ function showMC(){
 
 if(index>=10){
 
+localStorage.setItem("score19", Math.round((score/10)*100));
+
 document.getElementById("app").innerHTML=
 "<h2>Test Complete</h2><p>Score "+score+"/10</p>";
 
@@ -264,17 +264,12 @@ function answerMC(choice){
 let correct=vocab[index];
 
 if(choice===correct.d){
-
 score++;
-
 }else{
-
 missed.push(correct.w);
-
 }
 
 index++;
-
 showMC();
 
 }
@@ -296,9 +291,7 @@ missed.forEach(w=>{
 let v=vocab.find(x=>x.w===w);
 
 if(v){
-
 html+="<p><b>"+v.w+"</b> — "+v.d+"</p>";
-
 }
 
 });
@@ -312,9 +305,7 @@ function cram(){
 let html="<h2>5 Minute Cram Sheet</h2>";
 
 vocab.forEach(v=>{
-
 html+="<p><b>"+v.w+"</b> — "+v.d+"</p>";
-
 });
 
 document.getElementById("app").innerHTML=html;
