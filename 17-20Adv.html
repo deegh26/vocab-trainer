@@ -2,209 +2,65 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>LGR Vocabulary Trainer Units 17–20</title>
+<title>Units 17–20</title>
 <style>
-body { font-family: Arial; background: #eef2ff; padding: 15px; font-size: 18px; text-align: center; }
-button { padding: 10px 16px; margin: 6px; border: none; border-radius: 8px; background: #4a6cff; color: white; font-size: 16px; cursor: pointer; }
-.card { width: 90%; max-width: 400px; margin: 10px auto; background: #fff; padding: 20px; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,.2); font-size: 22px; }
-.option { display: block; width: 80%; margin: 6px auto; background: #fff; border: 1px solid #ccc; padding: 10px; border-radius: 6px; cursor: pointer; }
-.stats { font-size: 18px; }
-@media (max-width: 500px) { body { font-size: 16px; padding: 10px; } .card { font-size: 20px; } }
+body{font-family:Arial;background:#eef2ff;text-align:center;padding:20px;}
+button{padding:10px;margin:6px;border:none;border-radius:8px;background:#4a6cff;color:white;}
+.option{display:block;margin:8px auto;padding:12px;border:1px solid #ccc;width:80%;max-width:300px;border-radius:6px;cursor:pointer;}
 </style>
 </head>
+
 <body>
 
-<h1>LGR Vocabulary Trainer</h1>
-<h3>Units 17–20</h3>
+<h2>Units 17–20</h2>
+<button onclick="location.href='index.html'">Home</button>
 
-<!-- Navigation Buttons -->
-<button onclick="flashcards()">Flashcards</button>
-<button onclick="sentenceQuiz()">Sentence Quiz</button>
-<button onclick="multipleChoice()">Multiple Choice Test</button>
-<button onclick="review()">Hard Words Review</button>
-<button onclick="cram()">5 Minute Cram</button>
-<button onclick="location.href='index.html'">Go Back Home</button>
-
+<button onclick="start()">Start Multiple Choice</button>
 <div id="app"></div>
 
 <script>
-// Vocabulary list Units 17–20
-const vocab = [
+
+const vocab=[
 {w:"elongate",d:"make longer"},
-{w:"prolong",d:"extend time"},
-{w:"abbreviate",d:"make shorter"},
-{w:"brevity",d:"shortness"},
-{w:"density",d:"thickness"},
-{w:"condense",d:"make shorter"},
-{w:"emaciated",d:"very thin"},
-{w:"meager",d:"not plentiful"},
-{w:"attentive",d:"careful and focused"},
-{w:"intend",d:"plan to do"},
-{w:"aerate",d:"fill with air"},
-{w:"aerial",d:"in the air"},
-{w:"airy",d:"light and open"},
-{w:"inflate",d:"make bigger"},
-{w:"deflate",d:"make smaller"},
-{w:"ventilate",d:"push air through"},
-{w:"hyperventilate",d:"breathe too fast"},
 {w:"aspire",d:"aim for a goal"},
-{w:"spirited",d:"energetic"},
 {w:"expire",d:"come to an end"},
-{w:"narrative",d:"a story"},
-{w:"narrate",d:"to tell a story"},
-{w:"pronounce",d:"say aloud"},
-{w:"denounce",d:"criticize strongly"},
-{w:"fabulous",d:"amazing"},
-{w:"fabled",d:"legendary"},
-{w:"mythical",d:"not real"},
-{w:"mythology",d:"collection of myths"},
-{w:"recount",d:"tell or describe"},
-{w:"discount",d:"reject as untrue"},
-{w:"idealistic",d:"believing in perfection"},
-{w:"ideal",d:"perfectly suitable"},
-{w:"idealize",d:"think of as perfect"},
-{w:"conscience",d:"sense of right and wrong"},
-{w:"scientific",d:"based on facts"},
-{w:"savvy",d:"clever understanding"},
-{w:"savor",d:"enjoy slowly"},
-{w:"certify",d:"prove true"},
-{w:"certainty",d:"something without doubt"},
-{w:"concerted",d:"done together"},
-{w:"ascertain",d:"figure out"}
+{w:"density",d:"thickness"}
 ];
 
-// Sentence quiz
-const sentenceQuestions = [
-{q:"The fog had high ______.",a:"density"},
-{q:"The scientist tried to ______ the long report.",a:"condense"},
-{q:"The dog looked ______ after days without food.",a:"emaciated"},
-{q:"The teacher asked us to ______ the story.",a:"narrate"},
-{q:"The detective tried to ______ the truth.",a:"ascertain"},
-{q:"The scientist used ______ evidence.",a:"scientific"},
-{q:"He hopes to ______ to become a doctor.",a:"aspire"},
-{q:"The coupon will ______ tomorrow.",a:"expire"},
-{q:"The team made a ______ effort.",a:"concerted"},
-{q:"The teacher asked us to ______ long words.",a:"abbreviate"}
-];
+let i=0;
 
-let index=0;
-let showWord=true;
-let score=0;
-let missed=[];
-
-// Shuffle function
-function shuffle(a){ return a.sort(()=>Math.random()-0.5); }
-
-// --- Flashcards ---
-function flashcards(){
-  shuffle(vocab);
-  index=0;
-  showWord=true;
-  document.getElementById("app").innerHTML = `
-    <h2>Flashcards</h2>
-    <div class="card" onclick="flip()" id="card"></div>
-    <br><button onclick="nextCard()">Next</button>
-  `;
-  renderCard();
+function start(){
+i=0;
+show();
 }
 
-function renderCard(){
-  const c = document.getElementById("card");
-  c.innerHTML = showWord ? "<b>"+vocab[index].w+"</b>" : vocab[index].d;
+function show(){
+let correct=vocab[i];
+
+let html="<h3>"+correct.w+"</h3>";
+
+vocab.forEach(v=>{
+html+="<div class='option' onclick='check(\""+v.d+"\")'>"+v.d+"</div>";
+});
+
+document.getElementById("app").innerHTML=html;
 }
 
-function flip(){ showWord=!showWord; renderCard(); }
-function nextCard(){ index=(index+1)%vocab.length; showWord=true; renderCard(); }
-
-// --- Sentence Quiz ---
-function sentenceQuiz(){
-  shuffle(sentenceQuestions);
-  index=0; score=0;
-  showSentence();
+function check(ans){
+if(ans===vocab[i].d){
+alert("✅ Correct!");
+i++;
+if(i<vocab.length){
+show();
+}else{
+document.getElementById("app").innerHTML="<h3>🎉 Finished!</h3>";
+}
+}else{
+alert("❌ Try again!");
+}
 }
 
-function showSentence(){
-  if(index>=sentenceQuestions.length){
-    localStorage.setItem("score17_20", Math.round((score/sentenceQuestions.length)*100));
-    document.getElementById("app").innerHTML = "<h2>Quiz Complete</h2><p>Score "+score+"/"+sentenceQuestions.length+"</p>";
-    return;
-  }
-  document.getElementById("app").innerHTML = `
-    <p class='card'>${sentenceQuestions[index].q}</p>
-    <input id='ans'>
-    <br><br>
-    <button onclick='checkSentence()'>Submit</button>
-    <p class='stats'>Score: ${score}</p>
-  `;
-}
-
-function checkSentence(){
-  let u = document.getElementById("ans").value.toLowerCase().trim();
-  if(u===sentenceQuestions[index].a){
-    score++;
-    index++;
-  }else{
-    alert("Incorrect. Try again!");
-    return;
-  }
-  showSentence();
-}
-
-// --- Multiple Choice ---
-function multipleChoice(){
-  shuffle(vocab);
-  index=0; score=0;
-  showMC();
-}
-
-function showMC(){
-  if(index>=10){
-    document.getElementById("app").innerHTML = "<h2>Test Complete</h2><p>Score "+score+"/10</p>";
-    return;
-  }
-  let correct = vocab[index];
-  let options = [correct];
-  while(options.length<4){
-    let r = vocab[Math.floor(Math.random()*vocab.length)];
-    if(!options.includes(r)) options.push(r);
-  }
-  shuffle(options);
-  let html = "<h2>"+correct.w+"</h2>";
-  options.forEach(o=>{
-    html+="<div class='option' onclick='answerMC(this,\""+correct.d+"\")'>"+o.d+"</div>";
-  });
-  document.getElementById("app").innerHTML = html;
-}
-
-function answerMC(el, correct){
-  if(el.innerHTML === correct){
-    score++;
-    index++;
-    showMC();
-  } else{
-    alert("Incorrect, try again!");
-  }
-}
-
-// --- Review ---
-function review(){
-  if(missed.length===0){ document.getElementById("app").innerHTML="<h2>No hard words yet!</h2>"; return; }
-  let html="<h2>Hard Words</h2>";
-  missed.forEach(w=>{
-    let v=vocab.find(x=>x.w===w);
-    if(v){ html+="<p><b>"+v.w+"</b> — "+v.d+"</p>"; }
-  });
-  document.getElementById("app").innerHTML=html;
-}
-
-// --- Cram Sheet ---
-function cram(){
-  let html="<h2>5 Minute Cram Sheet</h2>";
-  vocab.forEach(v=>{
-    html+="<p><b>"+v.w+"</b> — "+v.d+"</p>";
-  });
-  document.getElementById("app").innerHTML=html;
-}
 </script>
+
 </body>
 </html>
