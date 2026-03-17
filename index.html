@@ -9,6 +9,7 @@ body{font-family:Arial; background:#eef2ff; text-align:center; padding:30px;}
 button{padding:10px 16px; margin:6px; border:none; border-radius:8px; background:#4a6cff; color:white; font-size:15px; cursor:pointer;}
 .option{display:block; width:260px; margin:6px auto; background:#ffffff; border:1px solid #ccc; padding:10px; border-radius:6px; cursor:pointer;}
 .stats{font-size:18px;}
+#homeBtn{background:#333; display:none; margin-top:20px;}
 </style>
 </head>
 <body>
@@ -16,15 +17,21 @@ button{padding:10px 16px; margin:6px; border:none; border-radius:8px; background
 <h1>LGR Vocabulary Trainer</h1>
 <h3>Units 19–20</h3>
 
+<!-- Lesson Buttons -->
 <button onclick="flashcards()">Flashcards</button>
 <button onclick="sentenceQuiz()">Sentence Quiz</button>
 <button onclick="multipleChoice()">Multiple Choice Test</button>
 <button onclick="review()">Hard Words Review</button>
 <button onclick="cram()">5 Minute Cram</button>
 
+<!-- App container -->
 <div id="app"></div>
 
+<!-- Home Button (fixed outside #app) -->
+<button id="homeBtn" onclick="goHome()">Back to Home</button>
+
 <script>
+// Vocabulary
 const vocab=[
 {w:"narrative",d:"a story"},{w:"narrate",d:"to tell a story"},{w:"pronounce",d:"to say aloud"},
 {w:"denounce",d:"to criticize strongly"},{w:"fabulous",d:"amazing"},{w:"fabled",d:"legendary"},
@@ -39,29 +46,26 @@ let index=0, showWord=true, missed=[], score=0;
 
 function shuffle(a){return a.sort(()=>Math.random()-0.5);}
 
-function createHomeButton(){
-  const btn = document.createElement("button");
-  btn.textContent="Back to Home";
-  btn.onclick=()=>window.location.href="index.html";
-  document.getElementById("app").appendChild(btn);
-}
+// Show/Hide Home button
+function showHomeButton(){ document.getElementById("homeBtn").style.display="inline-block"; }
+function hideHomeButton(){ document.getElementById("homeBtn").style.display="none"; }
+function goHome(){ window.location.href="index.html"; }
 
+// Flashcards
 function flashcards(){
-  shuffle(vocab);
-  index=0; showWord=true;
+  hideHomeButton();
+  shuffle(vocab); index=0; showWord=true;
   document.getElementById("app").innerHTML=`<h2>Flashcards</h2><div class="card" id="card"></div><br><button onclick="next()">Next</button>`;
-  render();
-  createHomeButton();
+  render(); showHomeButton();
 }
-
 function render(){
   let c=document.getElementById("card");
   c.innerHTML=showWord ? "<b>"+vocab[index].w+"</b>" : vocab[index].d;
 }
-
 function flip(){ showWord=!showWord; render(); }
 function next(){ index=(index+1)%vocab.length; showWord=true; render(); }
 
+// Sentence Quiz
 const sentenceQuestions=[
 {q:"The teacher asked the student to ______ the story.",a:"narrate"},
 {q:"The scientist used ______ evidence.",a:"scientific"},
@@ -76,6 +80,7 @@ const sentenceQuestions=[
 ];
 
 function sentenceQuiz(){
+  hideHomeButton();
   shuffle(sentenceQuestions); index=0; score=0; showSentence();
 }
 
@@ -83,14 +88,13 @@ function showSentence(){
   if(index>=sentenceQuestions.length){
     localStorage.setItem("score19", Math.round((score/sentenceQuestions.length)*100));
     document.getElementById("app").innerHTML=`<h2>Quiz Complete</h2><p>Score ${score}/${sentenceQuestions.length}</p>`;
-    createHomeButton();
-    return;
+    showHomeButton(); return;
   }
   document.getElementById("app").innerHTML=
-  `<p style='font-size:22px'>${sentenceQuestions[index].q}</p>
-  <input id='ans'><br><br>
-  <button onclick='checkSentence()'>Submit</button>
-  <p class='stats'>Score: ${score}</p>`;
+    `<p style='font-size:22px'>${sentenceQuestions[index].q}</p>
+    <input id='ans'><br><br>
+    <button onclick='checkSentence()'>Submit</button>
+    <p class='stats'>Score: ${score}</p>`;
 }
 
 function checkSentence(){
@@ -100,7 +104,9 @@ function checkSentence(){
   index++; showSentence();
 }
 
+// Multiple Choice
 function multipleChoice(){
+  hideHomeButton();
   shuffle(vocab); index=0; score=0; showMC();
 }
 
@@ -108,8 +114,7 @@ function showMC(){
   if(index>=10){
     localStorage.setItem("score19", Math.round((score/10)*100));
     document.getElementById("app").innerHTML=`<h2>Test Complete</h2><p>Score ${score}/10</p>`;
-    createHomeButton();
-    return;
+    showHomeButton(); return;
   }
   let correct=vocab[index]; let options=[correct];
   while(options.length<4){ let r=vocab[Math.floor(Math.random()*vocab.length)]; if(!options.includes(r)) options.push(r);}
@@ -125,21 +130,22 @@ function answerMC(choice){
   index++; showMC();
 }
 
+// Review Hard Words
 function review(){
-  if(missed.length===0){ document.getElementById("app").innerHTML="<h2>No hard words yet!</h2>"; createHomeButton(); return; }
+  hideHomeButton();
+  if(missed.length===0){ document.getElementById("app").innerHTML="<h2>No hard words yet!</h2>"; showHomeButton(); return; }
   let html="<h2>Hard Words</h2>";
   missed.forEach(w=>{ let v=vocab.find(x=>x.w===w); if(v){ html+="<p><b>"+v.w+"</b> — "+v.d+"</p>"; } });
-  document.getElementById("app").innerHTML=html;
-  createHomeButton();
+  document.getElementById("app").innerHTML=html; showHomeButton();
 }
 
+// 5 Minute Cram
 function cram(){
+  hideHomeButton();
   let html="<h2>5 Minute Cram Sheet</h2>";
   vocab.forEach(v=>{ html+="<p><b>"+v.w+"</b> — "+v.d+"</p>"; });
-  document.getElementById("app").innerHTML=html;
-  createHomeButton();
+  document.getElementById("app").innerHTML=html; showHomeButton();
 }
-
 </script>
 </body>
 </html>
