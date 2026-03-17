@@ -1,1 +1,27 @@
-(Full functional 19-20 lesson HTML with flashcards and quizzes)
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Lessons 19–20</title>
+<style>
+body { font-family: Arial; background: #eef2ff; padding: 15px; font-size: 18px; text-align: center; }
+.card { width: 90%; max-width: 400px; margin: 10px auto; background: #fff; padding: 20px; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,.2); }
+button { padding: 10px 16px; margin: 6px; border: none; border-radius: 8px; background: #4a6cff; color: white; font-size: 16px; cursor: pointer; }
+.option { display: block; width: 80%; margin: 6px auto; background: #fff; border:1px solid #ccc; padding: 10px; border-radius:6px; cursor:pointer; }
+</style>
+</head>
+<body>
+<h1>Lessons 19–20</h1>
+<button onclick="location.href='index.html'">Go Back Home</button>
+<div id="app"></div>
+<script>
+// Example minimal JS to show functionality
+function flashcards(){ document.getElementById('app').innerHTML='<div class="card">Flashcards appear here</div>'; }
+function sentenceQuiz(){ document.getElementById('app').innerHTML='<div class="card">Sentence Quiz here</div>'; }
+function multipleChoice(){ document.getElementById('app').innerHTML='<div class="card">MCQ try-until-correct here</div>'; }
+function cram(){ document.getElementById('app').innerHTML='<div class="card">Cram sheet here</div>'; }
+function review(){ document.getElementById('app').innerHTML='<div class="card">Hard words review here</div>'; }
+</script>
+</body>
+</html>
