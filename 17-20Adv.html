@@ -14,29 +14,31 @@ button{padding:10px;margin:6px;border:none;border-radius:8px;background:#4a6cff;
 
 <h2>Units 17–20</h2>
 <button onclick="location.href='index.html'">Home</button>
+<button onclick="start()">Start Test</button>
 
-<button onclick="start()">Start Multiple Choice</button>
 <div id="app"></div>
 
 <script>
 
 const vocab=[
 {w:"elongate",d:"make longer"},
+{w:"prolong",d:"extend time"},
+{w:"abbreviate",d:"make shorter"},
+{w:"density",d:"thickness"},
+{w:"emaciated",d:"very thin"},
+{w:"attentive",d:"careful and focused"},
+{w:"inflate",d:"make bigger"},
+{w:"deflate",d:"make smaller"},
 {w:"aspire",d:"aim for a goal"},
-{w:"expire",d:"come to an end"},
-{w:"density",d:"thickness"}
+{w:"expire",d:"come to an end"}
 ];
 
 let i=0;
 
-function start(){
-i=0;
-show();
-}
+function start(){i=0;show();}
 
 function show(){
 let correct=vocab[i];
-
 let html="<h3>"+correct.w+"</h3>";
 
 vocab.forEach(v=>{
@@ -50,17 +52,13 @@ function check(ans){
 if(ans===vocab[i].d){
 alert("✅ Correct!");
 i++;
-if(i<vocab.length){
-show();
-}else{
-document.getElementById("app").innerHTML="<h3>🎉 Finished!</h3>";
-}
+if(i<vocab.length){show();}
+else{document.getElementById("app").innerHTML="<h3>🎉 Finished!</h3>";}
 }else{
 alert("❌ Try again!");
 }
 }
 
 </script>
-
 </body>
 </html>
