@@ -9,7 +9,7 @@ body{font-family:Arial; background:#eef2ff; text-align:center; padding:30px;}
 button{padding:10px 16px; margin:6px; border:none; border-radius:8px; background:#4a6cff; color:white; font-size:15px; cursor:pointer;}
 .option{display:block; width:260px; margin:6px auto; background:#ffffff; border:1px solid #ccc; padding:10px; border-radius:6px; cursor:pointer;}
 .stats{font-size:18px;}
-#homeBtn{background:#333; display:none; margin-top:20px;}
+#homeBtn{background:#333; color:white; margin-top:20px;}
 </style>
 </head>
 <body>
@@ -27,7 +27,7 @@ button{padding:10px 16px; margin:6px; border:none; border-radius:8px; background
 <!-- App container -->
 <div id="app"></div>
 
-<!-- Home Button (fixed outside #app) -->
+<!-- Home Button always visible -->
 <button id="homeBtn" onclick="goHome()">Back to Home</button>
 
 <script>
@@ -45,23 +45,18 @@ const vocab=[
 let index=0, showWord=true, missed=[], score=0;
 
 function shuffle(a){return a.sort(()=>Math.random()-0.5);}
-
-// Show/Hide Home button
-function showHomeButton(){ document.getElementById("homeBtn").style.display="inline-block"; }
-function hideHomeButton(){ document.getElementById("homeBtn").style.display="none"; }
 function goHome(){ window.location.href="index.html"; }
 
 // Flashcards
 function flashcards(){
-  hideHomeButton();
   shuffle(vocab); index=0; showWord=true;
-  document.getElementById("app").innerHTML=`<h2>Flashcards</h2><div class="card" id="card"></div><br><button onclick="next()">Next</button>`;
-  render(); showHomeButton();
+  document.getElementById("app").innerHTML=
+    `<h2>Flashcards</h2>
+     <div class="card" id="card" onclick="flip()"></div>
+     <br><button onclick="next()">Next</button>`;
+  render();
 }
-function render(){
-  let c=document.getElementById("card");
-  c.innerHTML=showWord ? "<b>"+vocab[index].w+"</b>" : vocab[index].d;
-}
+function render(){ document.getElementById("card").innerHTML = showWord ? "<b>"+vocab[index].w+"</b>" : vocab[index].d; }
 function flip(){ showWord=!showWord; render(); }
 function next(){ index=(index+1)%vocab.length; showWord=true; render(); }
 
@@ -79,16 +74,12 @@ const sentenceQuestions=[
 {q:"She wanted to ______ every bite of the delicious cake.",a:"savor"}
 ];
 
-function sentenceQuiz(){
-  hideHomeButton();
-  shuffle(sentenceQuestions); index=0; score=0; showSentence();
-}
-
+function sentenceQuiz(){ shuffle(sentenceQuestions); index=0; score=0; showSentence(); }
 function showSentence(){
   if(index>=sentenceQuestions.length){
     localStorage.setItem("score19", Math.round((score/sentenceQuestions.length)*100));
     document.getElementById("app").innerHTML=`<h2>Quiz Complete</h2><p>Score ${score}/${sentenceQuestions.length}</p>`;
-    showHomeButton(); return;
+    return;
   }
   document.getElementById("app").innerHTML=
     `<p style='font-size:22px'>${sentenceQuestions[index].q}</p>
@@ -96,7 +87,6 @@ function showSentence(){
     <button onclick='checkSentence()'>Submit</button>
     <p class='stats'>Score: ${score}</p>`;
 }
-
 function checkSentence(){
   let u=document.getElementById("ans").value.toLowerCase();
   if(u===sentenceQuestions[index].a){ score++; } 
@@ -105,16 +95,12 @@ function checkSentence(){
 }
 
 // Multiple Choice
-function multipleChoice(){
-  hideHomeButton();
-  shuffle(vocab); index=0; score=0; showMC();
-}
-
+function multipleChoice(){ shuffle(vocab); index=0; score=0; showMC(); }
 function showMC(){
   if(index>=10){
     localStorage.setItem("score19", Math.round((score/10)*100));
     document.getElementById("app").innerHTML=`<h2>Test Complete</h2><p>Score ${score}/10</p>`;
-    showHomeButton(); return;
+    return;
   }
   let correct=vocab[index]; let options=[correct];
   while(options.length<4){ let r=vocab[Math.floor(Math.random()*vocab.length)]; if(!options.includes(r)) options.push(r);}
@@ -123,28 +109,21 @@ function showMC(){
   options.forEach(o=>{ html+="<div class='option' onclick='answerMC(\""+o.d+"\")'>"+o.d+"</div>";});
   document.getElementById("app").innerHTML=html;
 }
-
-function answerMC(choice){
-  let correct=vocab[index];
-  if(choice===correct.d){ score++; } else{ missed.push(correct.w); }
-  index++; showMC();
-}
+function answerMC(choice){ let correct=vocab[index]; if(choice===correct.d){ score++; } else{ missed.push(correct.w); } index++; showMC(); }
 
 // Review Hard Words
 function review(){
-  hideHomeButton();
-  if(missed.length===0){ document.getElementById("app").innerHTML="<h2>No hard words yet!</h2>"; showHomeButton(); return; }
+  if(missed.length===0){ document.getElementById("app").innerHTML="<h2>No hard words yet!</h2>"; return; }
   let html="<h2>Hard Words</h2>";
   missed.forEach(w=>{ let v=vocab.find(x=>x.w===w); if(v){ html+="<p><b>"+v.w+"</b> — "+v.d+"</p>"; } });
-  document.getElementById("app").innerHTML=html; showHomeButton();
+  document.getElementById("app").innerHTML=html;
 }
 
 // 5 Minute Cram
 function cram(){
-  hideHomeButton();
   let html="<h2>5 Minute Cram Sheet</h2>";
   vocab.forEach(v=>{ html+="<p><b>"+v.w+"</b> — "+v.d+"</p>"; });
-  document.getElementById("app").innerHTML=html; showHomeButton();
+  document.getElementById("app").innerHTML=html;
 }
 </script>
 </body>
