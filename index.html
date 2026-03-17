@@ -2,164 +2,144 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>LGR Vocabulary Trainer</title>
-
+<title>LGR Vocabulary Trainer Units 19–20</title>
 <style>
-
-body{
-font-family:Arial, sans-serif;
-background:linear-gradient(135deg,#4a6cff,#7fa8ff);
-margin:0;
-text-align:center;
-color:white;
-}
-
-.header{
-padding:40px 20px;
-}
-
-.header h1{
-margin:0;
-font-size:36px;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:30px;
-padding:40px;
-max-width:900px;
-margin:auto;
-}
-
-.tile{
-background:white;
-color:#333;
-border-radius:14px;
-padding:30px 20px;
-box-shadow:0 10px 25px rgba(0,0,0,.25);
-transition:.25s;
-cursor:pointer;
-}
-
-.tile:hover{
-transform:translateY(-6px) scale(1.03);
-}
-
-a{
-text-decoration:none;
-color:inherit;
-}
-
-.progress{
-background:#ddd;
-border-radius:8px;
-height:10px;
-margin-top:14px;
-overflow:hidden;
-}
-
-.bar{
-background:#4a6cff;
-height:100%;
-width:0%;
-transition:width .5s;
-}
-
-button{
-margin-top:30px;
-padding:10px 16px;
-border:none;
-border-radius:8px;
-background:white;
-color:#4a6cff;
-font-weight:bold;
-cursor:pointer;
-}
-
-.footer{
-padding:20px;
-font-size:14px;
-opacity:.8;
-}
-
+body{font-family:Arial; background:#eef2ff; text-align:center; padding:30px;}
+.card{width:380px; min-height:220px; margin:auto; background:white; border-radius:14px; box-shadow:0 6px 18px rgba(0,0,0,.2); display:flex; align-items:center; justify-content:center; padding:20px; flex-direction:column; font-size:22px; cursor:pointer;}
+button{padding:10px 16px; margin:6px; border:none; border-radius:8px; background:#4a6cff; color:white; font-size:15px; cursor:pointer;}
+.option{display:block; width:260px; margin:6px auto; background:#ffffff; border:1px solid #ccc; padding:10px; border-radius:6px; cursor:pointer;}
+.stats{font-size:18px;}
 </style>
 </head>
-
 <body>
 
-<div class="header">
-<h1>Vocabulary Trainer</h1>
-<p>LGR Units 17–20 Study App</p>
-</div>
+<h1>LGR Vocabulary Trainer</h1>
+<h3>Units 19–20</h3>
 
-<div class="grid">
+<button onclick="flashcards()">Flashcards</button>
+<button onclick="sentenceQuiz()">Sentence Quiz</button>
+<button onclick="multipleChoice()">Multiple Choice Test</button>
+<button onclick="review()">Hard Words Review</button>
+<button onclick="cram()">5 Minute Cram</button>
 
-<a href="19-20Adv.html">
-<div class="tile">
-<h2>Lesson 19–20</h2>
-
-<div class="progress">
-<div id="bar19" class="bar"></div>
-</div>
-
-</div>
-</a>
-
-<a href="17-20Adv.html">
-<div class="tile">
-<h2>Lessons 17–20</h2>
-
-<div class="progress">
-<div id="barAll" class="bar"></div>
-</div>
-
-</div>
-</a>
-
-<a href="flashcards.html">
-<div class="tile">
-<h2>Flashcards</h2>
-
-<div class="progress">
-<div id="barFlash" class="bar"></div>
-</div>
-
-</div>
-</a>
-
-</div>
-
-<button onclick="resetProgress()">Reset Progress</button>
-
-<div class="footer">
-Study • Practice • Master Vocabulary
-</div>
+<div id="app"></div>
 
 <script>
+const vocab=[
+{w:"narrative",d:"a story"},{w:"narrate",d:"to tell a story"},{w:"pronounce",d:"to say aloud"},
+{w:"denounce",d:"to criticize strongly"},{w:"fabulous",d:"amazing"},{w:"fabled",d:"legendary"},
+{w:"mythical",d:"not real"},{w:"mythology",d:"collection of myths"},{w:"recount",d:"tell or describe"},
+{w:"discount",d:"reject as untrue"},{w:"idealistic",d:"believing in perfection"},{w:"ideal",d:"perfectly suitable"},
+{w:"idealize",d:"think of as perfect"},{w:"conscience",d:"sense of right and wrong"},{w:"scientific",d:"based on facts"},
+{w:"savvy",d:"clever understanding"},{w:"savor",d:"enjoy slowly"},{w:"certify",d:"prove true"},
+{w:"certainty",d:"something without doubt"},{w:"concerted",d:"done together"},{w:"ascertain",d:"figure out"}
+];
 
-function loadProgress(){
+let index=0, showWord=true, missed=[], score=0;
 
-let p19 = localStorage.getItem("score19") || 0;
-let pAll = localStorage.getItem("scoreAll") || 0;
-let pFlash = localStorage.getItem("scoreFlash") || 0;
+function shuffle(a){return a.sort(()=>Math.random()-0.5);}
 
-document.getElementById("bar19").style.width = p19 + "%";
-document.getElementById("barAll").style.width = pAll + "%";
-document.getElementById("barFlash").style.width = pFlash + "%";
-
+function createHomeButton(){
+  const btn = document.createElement("button");
+  btn.textContent="Back to Home";
+  btn.onclick=()=>window.location.href="index.html";
+  document.getElementById("app").appendChild(btn);
 }
 
-function resetProgress(){
-
-localStorage.clear();
-location.reload();
-
+function flashcards(){
+  shuffle(vocab);
+  index=0; showWord=true;
+  document.getElementById("app").innerHTML=`<h2>Flashcards</h2><div class="card" id="card"></div><br><button onclick="next()">Next</button>`;
+  render();
+  createHomeButton();
 }
 
-loadProgress();
+function render(){
+  let c=document.getElementById("card");
+  c.innerHTML=showWord ? "<b>"+vocab[index].w+"</b>" : vocab[index].d;
+}
+
+function flip(){ showWord=!showWord; render(); }
+function next(){ index=(index+1)%vocab.length; showWord=true; render(); }
+
+const sentenceQuestions=[
+{q:"The teacher asked the student to ______ the story.",a:"narrate"},
+{q:"The scientist used ______ evidence.",a:"scientific"},
+{q:"The detective tried to ______ the truth.",a:"ascertain"},
+{q:"The team made a ______ effort.",a:"concerted"},
+{q:"The inspector will ______ the results.",a:"certify"},
+{q:"Fans sometimes ______ celebrities and think they are perfect.",a:"idealize"},
+{q:"Her computer ______ helped her fix the problem.",a:"savvy"},
+{q:"The teacher asked us to ______ each word clearly.",a:"pronounce"},
+{q:"Greek ______ includes stories about Zeus.",a:"mythology"},
+{q:"She wanted to ______ every bite of the delicious cake.",a:"savor"}
+];
+
+function sentenceQuiz(){
+  shuffle(sentenceQuestions); index=0; score=0; showSentence();
+}
+
+function showSentence(){
+  if(index>=sentenceQuestions.length){
+    localStorage.setItem("score19", Math.round((score/sentenceQuestions.length)*100));
+    document.getElementById("app").innerHTML=`<h2>Quiz Complete</h2><p>Score ${score}/${sentenceQuestions.length}</p>`;
+    createHomeButton();
+    return;
+  }
+  document.getElementById("app").innerHTML=
+  `<p style='font-size:22px'>${sentenceQuestions[index].q}</p>
+  <input id='ans'><br><br>
+  <button onclick='checkSentence()'>Submit</button>
+  <p class='stats'>Score: ${score}</p>`;
+}
+
+function checkSentence(){
+  let u=document.getElementById("ans").value.toLowerCase();
+  if(u===sentenceQuestions[index].a){ score++; } 
+  else{ missed.push(sentenceQuestions[index].a); alert("Answer: "+sentenceQuestions[index].a); }
+  index++; showSentence();
+}
+
+function multipleChoice(){
+  shuffle(vocab); index=0; score=0; showMC();
+}
+
+function showMC(){
+  if(index>=10){
+    localStorage.setItem("score19", Math.round((score/10)*100));
+    document.getElementById("app").innerHTML=`<h2>Test Complete</h2><p>Score ${score}/10</p>`;
+    createHomeButton();
+    return;
+  }
+  let correct=vocab[index]; let options=[correct];
+  while(options.length<4){ let r=vocab[Math.floor(Math.random()*vocab.length)]; if(!options.includes(r)) options.push(r);}
+  shuffle(options);
+  let html="<h2>"+correct.w+"</h2>";
+  options.forEach(o=>{ html+="<div class='option' onclick='answerMC(\""+o.d+"\")'>"+o.d+"</div>";});
+  document.getElementById("app").innerHTML=html;
+}
+
+function answerMC(choice){
+  let correct=vocab[index];
+  if(choice===correct.d){ score++; } else{ missed.push(correct.w); }
+  index++; showMC();
+}
+
+function review(){
+  if(missed.length===0){ document.getElementById("app").innerHTML="<h2>No hard words yet!</h2>"; createHomeButton(); return; }
+  let html="<h2>Hard Words</h2>";
+  missed.forEach(w=>{ let v=vocab.find(x=>x.w===w); if(v){ html+="<p><b>"+v.w+"</b> — "+v.d+"</p>"; } });
+  document.getElementById("app").innerHTML=html;
+  createHomeButton();
+}
+
+function cram(){
+  let html="<h2>5 Minute Cram Sheet</h2>";
+  vocab.forEach(v=>{ html+="<p><b>"+v.w+"</b> — "+v.d+"</p>"; });
+  document.getElementById("app").innerHTML=html;
+  createHomeButton();
+}
 
 </script>
-
 </body>
 </html>
