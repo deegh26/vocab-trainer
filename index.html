@@ -2,21 +2,108 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>LGR Vocabulary Landing Page</title>
+<title>LGR Vocabulary Trainer</title>
+
 <style>
-body { font-family: Arial; background: #eef2ff; text-align: center; padding: 20px; font-size: 18px; }
-.tiles-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; }
-.tile { flex: 1 1 45%; max-width: 200px; height: 120px; background: #4a6cff; color: white; font-size: 20px; display: flex; align-items: center; justify-content: center; border-radius: 14px; cursor: pointer; text-decoration: none; }
-.tile:hover { background: #3a54cc; transform: translateY(-3px); }
-@media (max-width: 500px) { .tile { flex: 1 1 100%; height: 100px; font-size: 18px; } body { font-size: 16px; padding: 15px; } }
+
+body{
+font-family:Arial;
+background:#eef2ff;
+margin:0;
+padding:20px;
+text-align:center;
+}
+
+h1{
+margin-bottom:10px;
+}
+
+.container{
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+gap:20px;
+max-width:900px;
+margin:auto;
+}
+
+.tile{
+background:white;
+padding:30px 20px;
+border-radius:16px;
+box-shadow:0 6px 18px rgba(0,0,0,.2);
+cursor:pointer;
+transition:0.2s;
+}
+
+.tile:hover{
+transform:scale(1.05);
+}
+
+.title{
+font-size:22px;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.score{
+font-size:16px;
+color:#555;
+}
+
+@media(max-width:500px){
+.title{font-size:20px;}
+}
+
 </style>
 </head>
+
 <body>
-<h1>LGR Vocabulary Lessons</h1>
-<div class="tiles-container">
-  <a class="tile" href="19-20Adv.html">Lessons 19–20</a>
-  <a class="tile" href="17-20Adv.html">Lessons 17–20</a>
-  <a class="tile" href="flashcards.html">Flashcards Units 17–20</a>
+
+<h1>LGR Vocabulary Trainer</h1>
+<p>Choose a lesson set</p>
+
+<div class="container">
+
+<div class="tile" onclick="openPage('19-20Adv.html')">
+<div class="title">Lessons 19–20</div>
+<div class="score" id="score19">Progress: Not started</div>
 </div>
+
+<div class="tile" onclick="openPage('17-20Adv.html')">
+<div class="title">Lessons 17–20</div>
+<div class="score" id="score1720">Progress: Not started</div>
+</div>
+
+<div class="tile" onclick="openPage('flashcards.html')">
+<div class="title">Flashcards</div>
+<div class="score">Study Mode</div>
+</div>
+
+</div>
+
+<script>
+
+function openPage(page){
+window.location.href = page;
+}
+
+// Load saved progress
+window.onload = function(){
+
+let s19 = localStorage.getItem("score19");
+let s1720 = localStorage.getItem("score1720");
+
+if(s19){
+document.getElementById("score19").innerHTML = "Score: " + s19 + "%";
+}
+
+if(s1720){
+document.getElementById("score1720").innerHTML = "Score: " + s1720 + "%";
+}
+
+};
+
+</script>
+
 </body>
 </html>
