@@ -2,84 +2,70 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>LGR Flashcards Units 17–20</title>
+<title>Flashcards Units 17–20</title>
 <style>
-body { font-family: Arial; background: #eef2ff; padding: 15px; font-size: 18px; text-align: center; }
-.card { width: 90%; max-width: 400px; height: 220px; margin: 15px auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,.2); font-size: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-button { padding: 10px 16px; margin: 6px; border: none; border-radius: 8px; background: #4a6cff; color: white; font-size: 16px; cursor: pointer; }
-@media (max-width: 500px) { body { font-size: 16px; } .card { font-size: 20px; } }
+body{font-family:Arial;background:#eef2ff;text-align:center;padding:20px;font-size:18px;}
+.card{width:90%;max-width:420px;margin:auto;background:white;padding:20px;border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.2);font-size:22px;cursor:pointer;}
+button{padding:10px 16px;margin:10px;border:none;border-radius:8px;background:#4a6cff;color:white;}
 </style>
 </head>
+
 <body>
 
-<h1>LGR Flashcards</h1>
-<h3>Units 17–20</h3>
+<h2>Flashcards (Units 17–20)</h2>
+<button onclick="location.href='index.html'">Home</button>
 
-<div class="card" id="card" onclick="flip()"></div>
+<div class="card" onclick="flip()" id="card"></div>
 <br>
-<button onclick="nextCard()">Next Card</button>
-<button onclick="location.href='index.html'">Go Back Home</button>
+<button onclick="next()">Next</button>
 
 <script>
-const vocab = [
-{w:"elongate",d:"make longer"},
-{w:"prolong",d:"extend time"},
-{w:"abbreviate",d:"make shorter"},
-{w:"brevity",d:"shortness"},
-{w:"density",d:"thickness"},
-{w:"condense",d:"make shorter"},
-{w:"emaciated",d:"very thin"},
-{w:"meager",d:"not plentiful"},
-{w:"attentive",d:"careful and focused"},
-{w:"intend",d:"plan to do"},
-{w:"aerate",d:"fill with air"},
-{w:"aerial",d:"in the air"},
-{w:"airy",d:"light and open"},
-{w:"inflate",d:"make bigger"},
-{w:"deflate",d:"make smaller"},
-{w:"ventilate",d:"push air through"},
-{w:"hyperventilate",d:"breathe too fast"},
-{w:"aspire",d:"aim for a goal"},
-{w:"spirited",d:"energetic"},
-{w:"expire",d:"come to an end"},
-{w:"narrative",d:"a story"},
-{w:"narrate",d:"to tell a story"},
-{w:"pronounce",d:"say aloud"},
-{w:"denounce",d:"criticize strongly"},
-{w:"fabulous",d:"amazing"},
-{w:"fabled",d:"legendary"},
-{w:"mythical",d:"not real"},
-{w:"mythology",d:"collection of myths"},
-{w:"recount",d:"tell or describe"},
-{w:"discount",d:"reject as untrue"},
-{w:"idealistic",d:"believing in perfection"},
-{w:"ideal",d:"perfectly suitable"},
-{w:"idealize",d:"think of as perfect"},
-{w:"conscience",d:"sense of right and wrong"},
-{w:"scientific",d:"based on facts"},
-{w:"savvy",d:"clever understanding"},
-{w:"savor",d:"enjoy slowly"},
-{w:"certify",d:"prove true"},
-{w:"certainty",d:"something without doubt"},
-{w:"concerted",d:"done together"},
-{w:"ascertain",d:"figure out"}
+
+const vocab=[
+{w:"elongate",d:"make longer",s:[
+"The teacher asked us to elongate the sentence with more details.",
+"The shadow began to elongate as the sun went down.",
+"She tried to elongate her answer to sound smarter."
+]},
+{w:"aspire",d:"aim for a goal",s:[
+"He hopes to aspire to become a doctor someday.",
+"Many students aspire to do well in school.",
+"She works hard because she aspires to succeed."
+]},
+{w:"narrative",d:"a story",s:[
+"The book had a clear narrative that was easy to follow.",
+"She wrote a narrative about her summer vacation.",
+"The teacher asked for a narrative in class."
+]},
+{w:"scientific",d:"based on facts",s:[
+"The project used scientific facts to explain the idea.",
+"He made a scientific guess after testing the problem.",
+"The report included scientific evidence."
+]},
+{w:"ascertain",d:"figure out",s:[
+"The detective tried to ascertain the truth.",
+"We must ascertain what caused the mistake.",
+"She asked questions to ascertain the answer."
+]}
 ];
 
-let index=0;
-let showWord=true;
+let i=0, showWord=true;
 
-function shuffle(a){ return a.sort(()=>Math.random()-0.5); }
-shuffle(vocab);
-
-function renderCard(){
-  const c = document.getElementById("card");
-  c.innerHTML = showWord ? "<b>"+vocab[index].w+"</b>" : vocab[index].d;
+function render(){
+let c=document.getElementById("card");
+if(showWord){
+c.innerHTML="<b>"+vocab[i].w+"</b>";
+}else{
+c.innerHTML="<b>"+vocab[i].d+"</b><br><br>"+vocab[i].s.join("<br><br>");
+}
 }
 
-function flip(){ showWord = !showWord; renderCard(); }
-function nextCard(){ index = (index+1) % vocab.length; showWord=true; renderCard(); }
+function flip(){showWord=!showWord;render();}
+function next(){i=(i+1)%vocab.length;showWord=true;render();}
 
-renderCard();
+render();
+
 </script>
 
 </body>
