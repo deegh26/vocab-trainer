@@ -2,47 +2,55 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Vocabulary Trainer</title>
+<title>LGR Vocabulary Trainer</title>
 
 <style>
 
 body{
-font-family:Arial;
-background:#eef2ff;
+font-family:Arial, sans-serif;
+background:linear-gradient(135deg,#4a6cff,#7fa8ff);
+margin:0;
 text-align:center;
-padding:40px;
+color:white;
 }
 
-h1{
-margin-bottom:40px;
+.header{
+padding:50px 20px 20px 20px;
+}
+
+.header h1{
+margin:0;
+font-size:36px;
+}
+
+.header p{
+opacity:.9;
 }
 
 .grid{
-display:flex;
-justify-content:center;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:30px;
-flex-wrap:wrap;
+padding:40px;
+max-width:900px;
+margin:auto;
 }
 
 .tile{
-width:220px;
-height:140px;
 background:white;
-border-radius:12px;
-box-shadow:0 6px 16px rgba(0,0,0,.2);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:22px;
+color:#333;
+border-radius:14px;
+padding:40px 20px;
+font-size:20px;
 font-weight:bold;
+box-shadow:0 10px 25px rgba(0,0,0,.2);
+transition:.25s;
 cursor:pointer;
-transition:.2s;
 }
 
 .tile:hover{
-transform:scale(1.05);
-background:#4a6cff;
-color:white;
+transform:translateY(-8px) scale(1.03);
+background:#eef2ff;
 }
 
 a{
@@ -50,27 +58,55 @@ text-decoration:none;
 color:inherit;
 }
 
+.icon{
+font-size:40px;
+margin-bottom:10px;
+}
+
+.footer{
+margin-top:20px;
+padding:20px;
+font-size:14px;
+opacity:.8;
+}
+
 </style>
 </head>
 
 <body>
 
-<h1>LGR Vocabulary Trainer</h1>
+<div class="header">
+<h1>Vocabulary Trainer</h1>
+<p>LGR Units 17–20 Study App</p>
+</div>
 
 <div class="grid">
 
 <a href="units19_20.html">
 <div class="tile">
+<div class="icon">📘</div>
 Lesson 19–20
 </div>
 </a>
 
 <a href="units17_20.html">
 <div class="tile">
+<div class="icon">📚</div>
 Lessons 17–20
 </div>
 </a>
 
+<a href="flashcards.html">
+<div class="tile">
+<div class="icon">🧠</div>
+Flashcards Only
+</div>
+</a>
+
+</div>
+
+<div class="footer">
+Study mode • Quiz mode • Hard word review
 </div>
 
 </body>
